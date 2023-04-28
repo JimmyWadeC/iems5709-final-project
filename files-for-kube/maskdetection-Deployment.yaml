@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mask-detection
+  name: mask-detection
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mask-detection
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: mask-detection
+        tier: frontend
+    spec:
+      containers:
+      - image: wadecheng/mask-detection:v1.0
+        command: ["/bin/bash", "-c"]
+        args: ["./darknet detector demo ./data/obj.data ./yolov4-tiny-custom.cfg ./yolov4-tiny-custom_best.weights /opt/videos/test1.mp4 -json_port 8070 -mjpeg_port 8090 -ext_output -dont_show"]
+        name: mask-detection
+        ports:
+        - containerPort: 8554
+        resources: {}
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /home
+          name: mask-detection
+      restartPolicy: Always
+      volumes:
+      - name: mask-detection
+        hostPath:
+          path: /home/s1155188655/files-for-kube
+          type: Directory
