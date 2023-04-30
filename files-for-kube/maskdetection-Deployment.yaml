@@ -33,5 +33,5 @@ spec:
       volumes:
       - name: mask-detection
         hostPath:
-          path: /home/s1155188655/files-for-kube
+          path: /home/s1155188655/iems5709-final-project/files-for-kube
           type: Directory
